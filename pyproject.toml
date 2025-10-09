@@ -13,3 +13,12 @@ classifiers = [
 dynamic = ["version"]
 [tool.maturin]
 features = ["pyo3/extension-module"]
+
+[tool.uv]
+cache-keys = [
+    { file = "Cargo.toml" },
+    { file = "Cargo.lock" },
+    { file = "pyproject.toml" },
+    { file = "ruff_format.pyi" },
+    { file = "src/**/*.rs" },
+]

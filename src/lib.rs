@@ -1,14 +1,20 @@
 use pyo3::prelude::*;
 
-/// Formats the sum of two numbers as string.
 #[pyfunction]
-fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
-    Ok((a + b).to_string())
+fn format_string(code: &str) -> PyResult<String> {
+    ruff_python_formatter::format_module_source(
+        code,
+        ruff_python_formatter::PyFormatOptions::default(),
+    )
+    .map_err(|e| {
+        PyErr::new::<pyo3::exceptions::PyRuntimeError, _>(format!("Failed to format code: {}", e))
+    })
+    .map(|formatted| formatted.into_code())
 }
 
 /// A Python module implemented in Rust.
 #[pymodule]
 fn ruff_format(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+    m.add_function(wrap_pyfunction!(format_string, m)?)?;
     Ok(())
 }
