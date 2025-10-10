@@ -13,7 +13,7 @@ fn format_string(code: &str) -> PyResult<String> {
 }
 
 /// A Python module implemented in Rust.
-#[pymodule]
+#[pymodule(gil_used=false)]
 fn ruff_format(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(format_string, m)?)?;
     Ok(())
