@@ -15,12 +15,14 @@ pip install ruff-format
 ## Usage
 
 ```python
-from ruff_format import format_string
+from ruff_format import format_string, is_valid_syntax
 
 code = """
 def hello(  x,y,   z  ):
     print( x+y+z )
 """
+
+assert is_valid_syntax(code)
 
 formatted = format_string(code)
 print(formatted)
