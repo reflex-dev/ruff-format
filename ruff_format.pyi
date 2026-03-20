@@ -18,7 +18,7 @@ def is_valid_syntax(code: str) -> bool:
         True if the code has valid syntax, False otherwise.
     """
 
-def format_string(code: str, *, line_width: int) -> str:
+def format_string(code: str, *, line_width: int = 80) -> str:
     """Format a Python code string using Ruff.
 
     Args:
