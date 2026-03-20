@@ -15,16 +15,25 @@ pip install ruff-format
 ## Usage
 
 ```python
-from ruff_format import format_string, is_valid_syntax
+from ruff_format import format_string, is_valid_syntax, parse_code
 
 code = """
 def hello(  x,y,   z  ):
     print( x+y+z )
 """
 
+# Check if code has valid syntax
 assert is_valid_syntax(code)
 
+# Parse code (raises RuntimeError on syntax errors)
+parse_code(code)
+
+# Format code (default line width: 80)
 formatted = format_string(code)
+print(formatted)
+
+# Format with a custom line width
+formatted = format_string(code, line_width=120)
 print(formatted)
 ```
 
