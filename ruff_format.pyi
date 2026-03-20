@@ -1,3 +1,13 @@
+def parse_code(code: str) -> None:
+    """Parse the given Python code string to check for syntax errors.
+
+    Args:
+        code: The Python code to parse.
+
+    Raises:
+        RuntimeError: If parsing fails due to syntax errors.
+    """
+
 def is_valid_syntax(code: str) -> bool:
     """Check if the given Python code string has valid syntax.
 
@@ -8,7 +18,7 @@ def is_valid_syntax(code: str) -> bool:
         True if the code has valid syntax, False otherwise.
     """
 
-def format_string(code: str) -> str:
+def format_string(code: str, *, line_width: int) -> str:
     """Format a Python code string using Ruff.
 
     Args:
