@@ -4,6 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "ruff-format"
+description = "Python bindings for the Ruff code formatter, built with Rust and PyO3."
 requires-python = ">=3.8"
 license = { text = "MIT" }
 classifiers = [
