@@ -138,9 +138,10 @@ jobs:
           name: wheels-windows-${{ matrix.platform.target }}
           path: dist
 
-  # windows-11-arm is split into two jobs because installing both 3.13 and 3.14t
-  # into the same runner's hostedtoolcache collides on arm64.
-  # See https://github.com/actions/setup-python/issues/1241
+  # Free-threaded 3.14t wheels for windows-11-arm are skipped: the runner image
+  # ships with Python 3.14 GIL preinstalled, which breaks setup-python's 3.14t
+  # install. Tracked upstream at
+  # https://github.com/actions/partner-runner-images/issues/154
   windows_arm:
     runs-on: windows-11-arm
     steps:
@@ -159,26 +160,6 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: wheels-windows-aarch64
-          path: dist
-
-  windows_arm_freethreaded:
-    runs-on: windows-11-arm
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-        with:
-          python-version: 3.14t
-          architecture: arm64
-      - name: Build free-threaded wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: aarch64
-          args: --release --out dist -i python3.14t
-          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      - name: Upload wheels
-        uses: actions/upload-artifact@v6
-        with:
-          name: wheels-windows-aarch64-freethreaded
           path: dist
 
   macos:
@@ -235,7 +216,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' }}
-    needs: [linux, musllinux, windows, windows_arm, windows_arm_freethreaded, macos, sdist]
+    needs: [linux, musllinux, windows, windows_arm, macos, sdist]
     permissions:
       # Use to sign the release artifacts
       id-token: write
